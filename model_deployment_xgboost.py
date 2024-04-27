@@ -44,8 +44,12 @@ class PrediccionPrecio(Resource):
         # Obtener los datos de la solicitud
         data = request.json
         
-        # Crear la variable Region
-        data['Region'] = data['State'].apply(clasificar_estado)
+        # Obtener el estado
+        estado = data['State']
+        # Obtener la región correspondiente
+        region = clasificar_estado(estado)
+        # Asignar la región al DataFrame
+        data['Region'] = region
 
         # Categorizar las variables
         data['Make'] = data['Make'].astype('category')
