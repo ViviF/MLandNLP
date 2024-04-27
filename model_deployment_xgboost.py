@@ -11,6 +11,7 @@ api = Api(app, version='1.0', title='Used Vehicle Price Prediction', description
 # Extraer la ruta del archivo actual y Cargar el modelo XGBoost en esta ruta 
 modelo_xgboost = joblib.load(os.path.dirname(__file__) + '/modelo_XGBoost_region.pkl') 
 #modelo_xgboost = joblib.load('modelo_XGBoost_region.pkl') 
+#print(modelo_xgboost)
 
 def clasificar_estado(estado):
     estado = estado.strip()
@@ -28,7 +29,7 @@ def clasificar_estado(estado):
         return 'Error'
 
 # Definir parser para analizar los argumentos de la solicitud
-resource_fields = api.model('Resource', {'result': fields.Float(description='Used Vehicle Price Prediction')})
+resource_fields = api.model('Resource', {'Predicted Price': fields.Float(description='Used Vehicle Price Prediction')})
 
 # Definir la clase de recurso para manejar las solicitudes de predicción
 @api.route('/predict')
