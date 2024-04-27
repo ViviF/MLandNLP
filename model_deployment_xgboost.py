@@ -2,16 +2,14 @@ from flask import Flask, request, jsonify
 from flask_restx import Api, Resource, fields
 import joblib
 import pandas as pd
-#import os
+import os
 from xgboost import XGBRegressor
-
 
 app = Flask(__name__)
 api = Api(app, version='1.0', title='Used Vehicle Price Prediction', description='Used Vehicle Price Prediction')
 
 # Extraer la ruta del archivo actual y Cargar el modelo XGBoost en esta ruta 
-#modelo_xgboost = joblib.load(os.path.dirname(__file__) + '/modelo_XGBoost_region.pkl') 
-modelo_xgboost = joblib.load('modelo_XGBoost_region.pkl') 
+modelo_xgboost = joblib.load(os.path.dirname(__file__) + '/modelo_XGBoost_region.pkl') 
 
 def clasificar_estado(estado):
     estado = estado.strip()
@@ -44,23 +42,26 @@ class PrediccionPrecio(Resource):
     @api.marshal_with(resource_fields)
     def post(self):
         # Obtener los datos de la solicitud
-        data = request.json
+        #data = request.json
         
-        # Obtener el estado
-        estado = data['State']
-        # Obtener la región correspondiente
-        region = clasificar_estado(estado)
-        # Asignar la región al DataFrame
-        data['Region'] = region
+        # Obtener los datos de la solicitud del formulario
+        year = int(request.form['Year'])
+        mileage = int(request.form['Mileage'])
+        state = request.form['State']
+        make = request.form['Make']
+        model = request.form['Model']
 
+        # Obtener la región correspondiente
+        region = clasificar_estado(state)
+    
         # Crear un DataFrame con los datos de entrada
-        df = pd.DataFrame(data)
-        df = df.drop(['State'], axis=1)
-        
+        df = pd.DataFrame({'Year': [year], 'Mileage': [mileage], 'Make': [make], 'Model': [model], 'Region': [region]})
+    
+
         # Categorizar las variables
-        df['Make'] = df['Make'].astype('category')
-        df['Model'] = df['Model'].astype('category')
-        df['Region'] = df['Region'].astype('category')
+        #df['Make'] = df['Make'].astype('category')
+        #df['Model'] = df['Model'].astype('category')
+        #df['Region'] = df['Region'].astype('category')
 
         # Realizar la predicción con el modelo XGBoost
         prediction = modelo_xgboost.predict(df)[0]
