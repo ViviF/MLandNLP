@@ -43,19 +43,23 @@ class PrediccionPrecio(Resource):
     @api.marshal_with(resource_fields)
     def post(self):
         # Obtener los datos de la solicitud
-        data = request.json
+        #data = request.json
         
-        # Obtener el estado
-        estado = data['State']
-        # Obtener la región correspondiente
-        region = clasificar_estado(estado)
-        # Asignar la región al DataFrame
-        data['Region'] = region
+        # Obtener los datos de la solicitud del formulario
+        year = int(request.form['Year'])
+        mileage = int(request.form['Mileage'])
+        state = request.form['State']
+        make = request.form['Make']
+        model = request.form['Model']
 
+
+        # Obtener la región correspondiente
+        region = clasificar_estado(state)
+    
         # Crear un DataFrame con los datos de entrada
-        df = pd.DataFrame(data)
-        df = df.drop(['State'], axis=1)
-        
+        df = pd.DataFrame({'Year': [year], 'Mileage': [mileage], 'Make': [make], 'Model': [model], 'Region': [region]})
+    
+
         # Categorizar las variables
         #df['Make'] = df['Make'].astype('category')
         #df['Model'] = df['Model'].astype('category')
