@@ -44,7 +44,8 @@ class PrediccionPrecio(Resource):
     def post(self):
         # Obtener los datos de la solicitud
         data = request.json
-        
+        print("Datos recibidos:", data)
+
         # Obtener el estado
         estado = data['State']
         # Obtener la región correspondiente
@@ -60,6 +61,9 @@ class PrediccionPrecio(Resource):
         df['Make'] = df['Make'].astype('category')
         df['Model'] = df['Model'].astype('category')
         df['Region'] = df['Region'].astype('category')
+
+        print("DataFrame creado:")
+        print(df)
 
         # Realizar la predicción con el modelo XGBoost
         prediction = modelo_xgboost.predict(df)[0]
