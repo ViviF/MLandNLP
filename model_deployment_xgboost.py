@@ -2,14 +2,15 @@ from flask import Flask, request, jsonify
 from flask_restx import Api, Resource, fields
 import joblib
 import pandas as pd
+import os
 from xgboost import XGBRegressor
 
 
 app = Flask(__name__)
 api = Api(app, version='1.0', title='Used Vehicle Price Prediction', description='Used Vehicle Price Prediction')
 
-# Cargar el modelo CatBoost
-modelo_xgboost = joblib.load('modelo_XGBoost_region.pkl')
+# Extraer la ruta del archivo actual y Cargar el modelo XGBoost en esta ruta 
+modelo_xgboost = joblib.load(os.path.dirname(__file__) + '/modelo_XGBoost_region.pkl') 
 
 def clasificar_estado(estado):
     estado = estado.strip()
