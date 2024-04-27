@@ -52,6 +52,11 @@ class PrediccionPrecio(Resource):
         # Asignar la región al DataFrame
         data['Region'] = region
 
+        # Convertir valores escalares en listas
+        for key, value in data.items():
+            if not isinstance(value, list):
+                data[key] = [value]
+
         # Crear un DataFrame con los datos de entrada
         df = pd.DataFrame(data)
         df = df.drop(['State'], axis=1)
