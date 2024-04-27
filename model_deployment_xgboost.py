@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_restx import Api, Resource, fields
 import joblib
 import pandas as pd
-#import os
+import os
 from xgboost import XGBRegressor
 
 app = Flask(__name__)
