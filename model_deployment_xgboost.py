@@ -8,7 +8,7 @@ from xgboost import XGBRegressor
 app = Flask(__name__)
 api = Api(app, version='1.0', title='Used Vehicle Price Prediction', description='Used Vehicle Price Prediction')
 
-modelo_xgboost = joblib.load(os.path.dirname(__file__) + '/modelo_XGBoost.pkl') 
+#modelo_xgboost = joblib.load(os.path.dirname(__file__) + '/modelo_XGBoost.pkl') 
 
 parser = api.parser()
 parser.add_argument('Year', type=int, required=True, help='Year of the vehicle', location='args')
@@ -36,8 +36,9 @@ class PrediccionPrecio(Resource):
         df = pd.DataFrame(data, index=[0])
         df['Make'] = df['Make'].astype('category')
         df['Model'] = df['Model'].astype('category')
-        prediction = modelo_xgboost.predict(df)[0]
-        data['Predicted Price'] = prediction
+        #prediction = modelo_xgboost.predict(df)[0]
+        #data['Predicted Price'] = prediction
+        data['Predicted Price'] = 989
         return data, 200
 
 if __name__ == '__main__':
