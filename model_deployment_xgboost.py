@@ -13,6 +13,7 @@ modelo_xgboost = joblib.load(os.path.dirname(__file__) + '/modelo_XGBoost.pkl')
 parser = api.parser()
 parser.add_argument('Year', type=int, required=True, help='Year of the vehicle', location='args')
 parser.add_argument('Mileage', type=int, required=True, help='Mileage of the vehicle', location='args')
+parser.add_argument('State', type=str, required=True, help='State of the vehicle', location='args')
 parser.add_argument('Make', type=str, required=True, help='Make of the vehicle', location='args')
 parser.add_argument('Model', type=str, required=True, help='Model of the vehicle', location='args')
 
