@@ -43,13 +43,16 @@ class PrediccionGenre(Resource):
         # Realizar la predicción con el modelo Regresión Logística
         prediction_proba  = modelo_reg_log.predict_proba(plot_vectorizado)
 
+        # Tomar la primera fila de prediction_proba (la única estimación)
+        prob_row = prediction_proba[0]
+
         # Inicializar la lista de predicciones
         prediction = []
 
         # Iterar sobre las probabilidades predichas y sus índices
-        for i in range(prediction_proba):
-            # Verificar si la probabilidad para esta clase supera 0.5
-            if prediction_proba[i] > 0.5:
+        for i, prob in enumerate(prob_row):
+            # Verificar si la probabilidad para esta clase supera el umbral
+            if prob > 0.5:
                 # Agregar el nombre de la clase correspondiente a la lista de predicciones
                 prediction.append(cols[i])
         
