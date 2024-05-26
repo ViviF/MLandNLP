@@ -50,8 +50,8 @@ class PrediccionGenre(Resource):
         for i, prob in enumerate(prediction_proba):
             # Verificar si la probabilidad para esta clase supera 0.5
             if prob > 0.5:
-            # Agregar el nombre de la clase correspondiente a la lista de predicciones
-            prediction.append(cols[i])
+                # Agregar el nombre de la clase correspondiente a la lista de predicciones
+                prediction.append(cols[i])
         
         # Devolver los géneros de las películas
         return {'Movie Genre': prediction}, 200
