@@ -43,14 +43,18 @@ class PrediccionGenre(Resource):
         # Realizar la predicción con el modelo Regresión Logística
         prediction_proba  = modelo_reg_log.predict_proba(plot_vectorizado)
 
-        # Umbral mayor a 0.5 para estimar los géneros
-        prediction = [cols[i] for i, prob in enumerate(prediction_proba) if prob > 0.5]
+        # Inicializar la lista de predicciones
+        prediction = []
+
+        # Iterar sobre las probabilidades predichas y sus índices
+        for i, prob in enumerate(prediction_proba):
+            # Verificar si la probabilidad para esta clase supera 0.5
+            if prob > 0.5:
+            # Agregar el nombre de la clase correspondiente a la lista de predicciones
+            prediction.append(cols[i])
         
         # Devolver los géneros de las películas
         return {'Movie Genre': prediction}, 200
     
-        
-
-
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
