@@ -47,9 +47,9 @@ class PrediccionGenre(Resource):
         prediction = []
 
         # Iterar sobre las probabilidades predichas y sus índices
-        for i, prob in enumerate(prediction_proba):
+        for i in range(prediction_proba):
             # Verificar si la probabilidad para esta clase supera 0.5
-            if prob > 0.5:
+            if prediction_proba[i] > 0.5:
                 # Agregar el nombre de la clase correspondiente a la lista de predicciones
                 prediction.append(cols[i])
         
