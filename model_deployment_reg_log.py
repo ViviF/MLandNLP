@@ -24,7 +24,7 @@ parser = api.parser()
 parser.add_argument('Plot', type=str, required=True, help='Write the plot of the movie', location='args')
 
 resource_fields = api.model('Resource', {
-       'Movie Genre': fields.String(description='Movie Genre')
+       'Top 5 Movie Genre': fields.String(description='Movie Genre')
 })
 
 @api.route('/predict')
@@ -42,22 +42,28 @@ class PrediccionGenre(Resource):
         
         # Realizar la predicción con el modelo Regresión Logística
         prediction_proba  = modelo_reg_log.predict_proba(plot_vectorizado)
+        #print(prediction_proba)
 
         # Tomar la primera fila de prediction_proba (la única estimación)
         prob_row = prediction_proba[0]
+        #print(prob_row)        
 
         # Inicializar la lista de predicciones
-        prediction = []
+        genre_prob = []
 
         # Iterar sobre las probabilidades predichas y sus índices
         for i, prob in enumerate(prob_row):
-            # Verificar si la probabilidad para esta clase supera el umbral
-            if prob > 0.5:
-                # Agregar el nombre de la clase correspondiente a la lista de predicciones
-                prediction.append(cols[i])
-        
+            
+            genre_prob.append((cols[i], prob))
+                
+        # Ordenar la lista de tuplas por probabilidad de forma descendente
+        sorted_genre_probs = sorted(genre_prob, key=lambda x: x[1], reverse=True)
+
+        # Seleccionar los cinco primeros géneros con sus probabilidades
+        prediction = sorted_genre_probs[:5]
+
         # Devolver los géneros de las películas
-        return {'Movie Genre': prediction}, 200
+        return {'Top 5 Movie Genre': prediction}, 200
     
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
